@@ -1,24 +1,28 @@
-# C++ Project Starter Template
 
-This is a little quick-start project template for C++ projects which utilise a Core/App project architecture. There are two included projects - one called _Core_, and one called _App_. [Premake](https://github.com/premake/premake-core) is used to generate project files.
+# Websockets Console Chat App
 
-Core builds into a static library and is meant to contain common code intended for use in multiple applications. App builds into an executable and links the Core static library, as well as provides an include path to Core's code.
+Hi let me give u a little intro to who i am.
 
-The `Scripts/` directory contains build scripts for Windows and Linux, and the `Vendor/` directory contains Premake binaries (currently version `5.0-beta2`).
+My name is Bradley im a 23 year old. Studying Computer Science my background is in C# so im no C++ wizard by any means. But i have a huge intrest in everything that has to do with low level programming so i used this project to learn more about Websockets , Multithreading , Syncronization ,and Deadlock prevention. 
 
-## Getting Started
-1. Clone this repository or use the "Use this template" button on GitHub to quickly set up your own repository based on this template
-2. `App/` and `Core/` are the two projects - you can edit the names of these folders and their contents to suit
-3. The three included Premake build files are `Build.lua`, `Core/Build-Core.lua` and `App/Build-App.lua` - you can edit these to customise your build configurations, edit the names of your projects and workspace/solution, etc.
-4. Open the `Scripts/` directory and run the appropriate `Setup` script to generate projects files. You can edit the setup scripts to change the type of project that is generated - out of the box they are set to Visual Studio 2022 for Windows and gmake2 for Linux.
+# Learning about Websockets
+Since i have little to no knowledge about Websockets in C++ ( and in general i dont know alot about it ) i decided to learn a little bit about them and why they are quite cool. i found someone explaining it this way “A websocket is basically a network protocol that provides full duplex communication over a single persistent TCP connection” at this point i got even more confused. Duplex communication ? single persistent TCP Connection?  after letting it sink in for a bit and searching more explanations i think i started to get it . Let me explain in case ur still confused about it. The best way to explain it is by telling u that it works the opposite way off how HTTP works . Because HTTP is a  request - response model meaning the Client sends a Request to a specific endpoint on the server and the server responds to that request.  for a websocket its different a websocket keeps a constant connection between the Client and the Server this means no refreshes are needed + its fast.
 
-Note that no macOS setup script is currently provided; you can duplicate the Linux script and adjust accordingly.
+# Some rules i made for myself
+I decided to only use the winsock.h i did not want to use libraries like Socket.IO since the purpose off this project is learning and that would kinda make it “Easier” in a way.   
 
-## Included
-- Some example code (in `App/Source` and `Core/Source`) to provide a starting point and test
-- Simple `.gitignore` to ignore project files and binaries
-- Premake binaries for Win/Mac/Linux (`v5.0-beta2`)
+# Baby steps
+Since i have little to no experience with websockets and my understanding off them is still not great il start off with just a simple Client Server model where the server echo’s my message back. so i will leave the threading and deadlock situation to the side for now. 
 
-## License
-- UNLICENSE for this repository (see `UNLICENSE.txt` for more details)
-- Premake is licensed under BSD 3-Clause (see included LICENSE.txt file for more details)
+# Creating the TCP Echo Application
+Reading into the documentation off winsock i stumbled upon 
+
+https://learn.microsoft.com/en-us/windows/win32/winsock/getting-started-with-winsock
+
+after reading some info on what behaviour a server/client should have i got directed towards the Initialize winsock this section in the documentation told me about how all processes or DLL’s that call winsock functions must initialize the use off the windows Socket DLL. the provided a function WSAStartup that takes two parameters 1st one lets u tell what version u want i just went with 2,2 since thats what the docs did and i had no reason to do elseway. second parameter is an output parameter this one i thought was intresting and useless at the same time the require u to pass a WSADATA reference. i dont know what it is but i just dont like the fact off creating unitialized variables in C++ and i did not see any use for the variable (in  my case ).   
+
+Creating the socket was not as bad as i thought it would be after a few hair scratches and a coffee or 2 right now binding and creating the socket is still in one function but i will probably split that up into their own functions 
+
+i wont be covering start and stop functions since its straight forward what the functions do. with this the server side is done for the TCP Echo server example
+
+following the examples form microsoft docs the client was very easy to setup.  because Initializing & creating the actual socket is identical to how we did it for the server so all what was left to do was create a message loop and handle Receiving and Sending messages
